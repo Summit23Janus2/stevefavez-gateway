@@ -1,0 +1,69 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: stevefavez-stevefavez-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: stevefavez-stevefavez-poi-gateway-app-dev
+    backstage.io/kubernetes-id: stevefavez-stevefavez-poi-gateway-app-dev
+    backstage.io/kubernetes-namespace: stevefavez
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=stevefavez-stevefavez-poi-gateway-app-dev'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: Summit23Janus2/stevefavez-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.summit23blues.6mbu.p1.openshiftapps.com/dev-pipelines/ns/stevefavez/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.summit23blues.6mbu.p1.openshiftapps.com/k8s/ns/stevefavez/deployments/stevefavez-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.summit23blues.6mbu.p1.openshiftapps.com/#https://github.com/Summit23Janus2/stevefavez-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/stevefavez"
+  system: workshop-system-stevefavez
+  providesApis:
+    - gateway-api-stevefavez
+  consumesApis:
+    - backend-api-stevefavez
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-stevefavez
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/stevefavez"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-stevefavez
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://stevefavez-poi-gateway-app-stevefavez.apps.summit23blues.6mbu.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/Summit23Janus2/stevefavez-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/stevefavez"
+  system: workshop-system-stevefavez
+  definition:
+    $text: https://github.com/Summit23Janus2/stevefavez-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
